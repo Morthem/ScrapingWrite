@@ -3,6 +3,7 @@ const fs = require('fs');
 
 var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id=1&sentido=ida";
 var escribe = false;
+var simbolo = '-';
 
 raw(link, (err, body) => {
 
