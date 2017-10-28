@@ -1,7 +1,8 @@
 const raw = require('tinyreq');
 const fs = require('fs');
 
-var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id=65&sentido=ida";
+var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id=1&sentido=ida";
+var escribe = false;
 
 raw(link, (err, body) => {
 
@@ -10,11 +11,30 @@ raw(link, (err, body) => {
         return;
     }
 
-    console.log(body);
-
     var test = fs.createWriteStream('test.js', {
-            flags: 'a'
-        });
+        flags: 'a'
+    });
 
-    test.write(body);
+    for (var i = 0; i < 50; i++) {
+        console.log(body[i]);
+        if (body[i] == "-") {
+            if (!escribe) {
+                test.write('[');
+            }
+            escribe = true;
+        }
+        if (escribe) {
+            test.write(body[i]);
+            if (body[i] == ']') {
+                test.write(',');
+                escribe = false;
+            }
+        }
+    }
+
+    // test.write(body);
+    //console.log(body[i]);
+
 });
+
+// }
