@@ -1,0 +1,11 @@
+{
+  "name": "newapirem",
+  "version": "1.0.0",
+  "description": "NewApiRem",
+  "main": "index.js",
+  "author": "Sturmenta",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "tinyreq": "^3.2.6"
+  }
+}
