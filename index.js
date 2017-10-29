@@ -2,11 +2,13 @@ const raw = require('tinyreq');
 const fs = require('fs');
 
 var num = 1;
-escribirdatos(num,"ida");
-escribirdatos(num,"vuelta");
 
-function escribirdatos(numero,sentido){
-    var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id="+numero+"&sentido="+sentido;
+// escribirdatos(num, "ida");
+escribirdatos(num, "vuelta");
+
+
+function escribirdatos(numero, sentido) {
+    var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id=" + numero + "&sentido=" + sentido;
     raw(link, (err, body) => {
 
         if (err || body == "") {
@@ -14,27 +16,27 @@ function escribirdatos(numero,sentido){
             return;
         }
 
-        var test = fs.createWriteStream('_'+numero+'.js', {
+        var test = fs.createWriteStream('_' + numero + '.js', {
             flags: 'a'
         });
-    /*
-        body = JSON.parse(body);
+        /*
+            body = JSON.parse(body);
 
-        body.features.map((e,i) => {
+            body.features.map((e,i) => {
 
-            console.log(e);
-            
-        });
-    */
+                console.log(e);
+                
+            });
+        */
         var escribe = false;
         var i = 0;
-        if (sentido=="ida"){
-            test.write("var _"+num+"_ida = {paths: [");
+        if (sentido == "ida") {
+            test.write("var _" + num + "_ida = {paths: [");
         }
-        if (sentido=="vuelta"){
-            test.write("]}var _"+num+"_vuelta = {paths: [");
+        if (sentido == "vuelta") {
+            test.write("]}; var _" + num + "_vuelta = {paths: [");
         }
-        while (body[i]!=null) {
+        while (body[i] != null) {
             //console.log(body[i]);
             if (body[i] == "-") {
                 if (!escribe) {
@@ -42,7 +44,7 @@ function escribirdatos(numero,sentido){
                 }
                 escribe = true;
             }
-            if (escribe&&body[i]!=" ") {
+            if (escribe && body[i] != " ") {
                 test.write(body[i]);
                 if (body[i] == ']') {
                     test.write(',');
@@ -51,8 +53,8 @@ function escribirdatos(numero,sentido){
             }
             i++;
         }
-        if (sentido=="vuelta"){
-            test.write("]}");
+        if (sentido == "vuelta") {
+            test.write("]};");
         }
 
         // test.write(body);
