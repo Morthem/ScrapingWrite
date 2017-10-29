@@ -1,11 +1,11 @@
 const raw = require('tinyreq');
 const fs = require('fs');
 
-var num = 1;
-
-// escribirdatos(num, "ida");
-escribirdatos(num, "vuelta");
-
+var sentido = "ida"
+// 
+for (var i=1;i<66;i++){
+escribirdatos(i,sentido);
+}
 
 function escribirdatos(numero, sentido) {
     var link = "https://miproximocolectivo.sanluis.gob.ar/MiProximoColectivo/LineaIdaVuelta/?id=" + numero + "&sentido=" + sentido;
@@ -19,25 +19,15 @@ function escribirdatos(numero, sentido) {
         var test = fs.createWriteStream('_' + numero + '.js', {
             flags: 'a'
         });
-        /*
-            body = JSON.parse(body);
-
-            body.features.map((e,i) => {
-
-                console.log(e);
-                
-            });
-        */
         var escribe = false;
         var i = 0;
         if (sentido == "ida") {
-            test.write("var _" + num + "_ida = {paths: [");
+            test.write("var _" + numero + "_ida = {paths: [");
         }
         if (sentido == "vuelta") {
-            test.write("]}; var _" + num + "_vuelta = {paths: [");
+            test.write("]}; var _" + numero + "_vuelta = {paths: [");
         }
         while (body[i] != null) {
-            //console.log(body[i]);
             if (body[i] == "-") {
                 if (!escribe) {
                     test.write('[');
@@ -55,10 +45,9 @@ function escribirdatos(numero, sentido) {
         }
         if (sentido == "vuelta") {
             test.write("]};");
+        }else{
+            escribirdatos(numero, "vuelta");
         }
-
-        // test.write(body);
-        //console.log(body[i]);
 
     });
 }
