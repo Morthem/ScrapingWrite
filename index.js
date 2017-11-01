@@ -3,8 +3,8 @@ const fs = require('fs');
 
 var sentido = "ida"
 // 
-for (var i=1;i<66;i++){
-escribirdatos(i,sentido);
+for (var i = 1; i < 68; i++) {
+    escribirdatos(i, sentido);
 }
 
 function escribirdatos(numero, sentido) {
@@ -30,12 +30,18 @@ function escribirdatos(numero, sentido) {
         while (body[i] != null) {
             if (body[i] == "-") {
                 if (!escribe) {
-                    test.write('[');
+                    test.write('{lng:');
+                } else {
+                    test.write('lat:')
                 }
                 escribe = true;
             }
             if (escribe && body[i] != " ") {
-                test.write(body[i]);
+                if (body[i] != ']') {
+                    test.write(body[i]);
+                } else {
+                    test.write('}');
+                }
                 if (body[i] == ']') {
                     test.write(',');
                     escribe = false;
@@ -45,7 +51,7 @@ function escribirdatos(numero, sentido) {
         }
         if (sentido == "vuelta") {
             test.write("]};");
-        }else{
+        } else {
             escribirdatos(numero, "vuelta");
         }
 
